@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Receitas</title>
+</head>
+<body>
+    <h1>Catálogo de Receitas</h1>
+    <a href="/receitas/nova">Criar Nova Receita</a> | <a href="/">Voltar</a>
+    <hr>
+
+    <% if (receitas.length === 0) { %>
+        <p>Nenhuma receita cadastrada ainda.</p>
+    <% } else { %>
+        <ul>
+            <% receitas.forEach(receita => { %>
+                <li>
+                    <h3><%= receita.titulo %></h3>
+                    <p><em>Por: <%= receita.Usuario ? receita.Usuario.nome : 'Autor Desconhecido' %></em></p>
+                    <p>Tempo: <%= receita.tempoPreparo %> min</p>
+                    <a href="#">Ver Detalhes (Em breve)</a>
+                </li>
+                <hr>
+            <% }) %>
+        </ul>
+    <% } %>
+</body>
+</html>

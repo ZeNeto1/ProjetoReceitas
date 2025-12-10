@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+</head>
+<body>
+    <h1>Usuários Cadastrados</h1>
+    <a href="/usuarios/novo">Cadastrar Novo Usuário</a>
+    <hr>
+
+    <ul>
+        <% usuarios.forEach(usuario => { %>
+            <li>
+                <strong><%= usuario.nome %></strong> - <%= usuario.email %>
+            </li>
+        <% }) %>
+    </ul>
+    
+    <% if (usuarios.length === 0) { %>
+        <p>Nenhum usuário encontrado.</p>
+    <% } %>
+    
+    <br>
+    <a href="/">Voltar ao Início</a>
+</body>
+</html>
