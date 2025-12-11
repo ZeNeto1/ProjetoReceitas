@@ -1,20 +1,26 @@
 const express = require('express');
 const app = express();
-const db = require('./config/database'); // Conexão
+const db = require('./config/database'); // Conexão com o banco de dados
 const path = require('path');
 
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const receitaRoutes = require('./routes/receitaRoutes');
+const avaliacaoRoutes = require('./routes/avaliacaoRoutes');
+
+// TEMPORARIO
 const { Usuario, Receita, Avaliacao } = require('./models/Associacoes');
 
 // --- CONFIGURAÇÕES DO EXPRESS ---
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs'); // Define EJS como template engine
+app.set('views', path.join(__dirname, 'views')); // Pasta onde ficam os arquivos .ejs
+app.use(express.static(path.join(__dirname, 'public'))); // Pasta onde ficam os arquivos .ejs
+app.use(express.urlencoded({ extended: true })); // Parse de formulários
 
+// --- ROTAS ---
 app.use('/usuarios', usuarioRoutes);
 app.use('/receitas', receitaRoutes);
+app.use('/avaliacoes', avaliacaoRoutes);
+
 
 // --- SINCRONISMO COM O BANCO ---
 db.sync({ force: false }) 
@@ -23,16 +29,24 @@ db.sync({ force: false })
     })
     .catch(err => console.error('Erro:', err));
 
-// Rota teste
-app.get('/', (req, res) => {
-    res.send(`
-        <div
-            <h1>Sistema de Receitas</h1>
-            <p>Escolha uma opção:</p>
-            <a href="/usuarios"> Usuários</a>
-            <a href="/receitas"> Receitas</a>
-        </div>
-    `);
+// Rota base para tela de início
+// app.get('/', (req, res) => {
+//     return res.render('home/index');
+// });
+
+// TEMPORARIO
+// Rota base para tela de início
+app.get('/', async (req, res) => {
+    try {
+        const usuarios = await Usuario.findAll();
+        const receitas = await Receita.findAll({ include: Usuario });
+        const avaliacoes = await Avaliacao.findAll({ include: [Usuario, Receita] });
+        
+        return res.render('home/index', { usuarios, receitas, avaliacoes });
+    } catch (err) {
+        console.error(err);
+        return res.render('home/index', { usuarios: [], receitas: [], avaliacoes: [] });
+    }
 });
 
 

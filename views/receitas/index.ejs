@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Receitas</title>
-    <link rel="stylesheet" href="/css/receitas.css">
+    <!-- <link rel="stylesheet" href="/css/receitas.css"> -->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="receitas-page">
     <div class="container">
     <h1>Catálogo de Receitas</h1>
     <a href="/receitas/nova">Criar Nova Receita</a> | <a href="/">Voltar</a>
@@ -21,6 +22,8 @@
                     <p><em>Por: <%= receita.Usuario ? receita.Usuario.nome : 'Autor Desconhecido' %></em></p>
                     <p>Tempo: <%= receita.tempoPreparo %> min</p>
                     <a href="#">Ver Detalhes (Em breve)</a>
+
+                    <a class="btn-avaliar" href="/avaliacoes/create?receitaId=<%= receita.id %>">Avaliar</a>
                 </li>
                 <hr>
             <% }) %>
