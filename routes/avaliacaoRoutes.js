@@ -9,8 +9,6 @@ const avaliacaoController = require('../controllers/avaliacaoController');
 router.post('/', avaliacaoController.store);
 
 
-
-
 // /avaliacoes/:id (Atualiza os dados da avaliação)
 router.put('/:id', avaliacaoController.update);
 

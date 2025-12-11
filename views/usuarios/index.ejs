@@ -10,14 +10,25 @@
     <a href="/usuarios/novo">Cadastrar Novo Usuário</a>
     <hr>
 
-    <% if (usuarios.length === 0) { %>
-        <p>Nenhum usuário encontrado.</p>
-    <% } else { %>
+    <div class="search-container">
+        <form action="/usuarios/search" method="GET">
+            <input type="text" name="termo" placeholder="Buscar por nome ou email..." value="<%= typeof termo !== 'undefined' ? termo : '' %>">
+            <button type="submit">Pesquisar</button>
+            
+            <% if (typeof termo !== 'undefined' && termo) { %>
+                <a href="/usuarios" class="btn-voltar">Limpar busca</a>
+            <% } %>
+        </form>
+    </div>
+
+    <br>
+
+    <% if (usuarios.length > 0) { %>
         <ul>
             <% usuarios.forEach(usuario => { %>
                 <li>
                     <strong><%= usuario.nome %></strong> - <%= usuario.email %>
-                    <a href="/usuarios/<%= usuario.id %>/editar">Editar</a>
+                    <a href="/usuarios/<%= usuario.id %>/editar" class="btn-editar">Editar</a>
 
                     <form action="/usuarios/<%= usuario.id %>?_method=DELETE" method="POST"
                           onsubmit="return confirm('Confirma exclusão do usuário <%= usuario.nome %>?');"
@@ -27,9 +38,20 @@
                 </li>
             <% }) %>
         </ul>
+    <% } else { %>
+        <div class="alerta-vazio">
+            <% if (typeof termo !== 'undefined' && termo) { %>
+                <p>Nenhum usuário encontrado para a busca: <strong>"<%= termo %>"</strong></p>
+                <a href="/usuarios" class="btn-voltar">Voltar para a lista completa</a>
+            <% } else { %>
+                <p>Nenhum usuário cadastrado no sistema.</p>
+                <a href="/usuarios/novo" class="btn-voltar">Cadastrar o primeiro usuário</a>
+            <% } %>
+        </div>
     <% } %>
     
     <br>
+    <hr>
     <a href="/">Voltar ao Início</a>
 </body>
 </html>

@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router(); 
 const usuarioController = require('../controllers/usuarioController');
 
+
+// /usuarios/search (Busca usuários pelo nome ou email)
+router.get('/search', usuarioController.search);
+
 // /usuarios/ (Lista todos)
 router.get('/', usuarioController.index);
 
 // /usuarios/salvar (Recebe os dados do form)
 router.post('/', usuarioController.store);
-
-
-
 
 // /usuarios/:id (Atualiza os dados do usuário)
 router.put('/:id', usuarioController.update);

@@ -11,6 +11,20 @@
     <h1>Catálogo de Receitas</h1>
     <a href="/receitas/nova">Criar Nova Receita</a> | <a href="/">Voltar</a>
     <hr>
+    <div class="search-container">
+        <form action="/receitas/busca" method="GET" class="search-form">
+            
+            <input type="text" name="termo" class="search-input" 
+                   placeholder="Pesquisar por receita ou autor..." 
+                   value="<%= (typeof termo !== 'undefined') ? termo : '' %>">
+            
+            <button type="submit" class="btn-search">Pesquisar</button>
+
+            <% if (typeof termo !== 'undefined' && termo) { %>
+                <a href="/receitas" class="btn-clear-search">Limpar</a>
+            <% } %>
+        </form>
+    </div>
 
     <% if (receitas.length === 0) { %>
         <p>Nenhuma receita cadastrada ainda.</p>
@@ -21,7 +35,11 @@
                     <h3><%= receita.titulo %></h3>
                     <p><em>Por: <%= receita.Usuario ? receita.Usuario.nome : 'Autor Desconhecido' %></em></p>
                     <p>Tempo: <%= receita.tempoPreparo %> min</p>
-
+                    <p>
+                    <strong>Média de avaliação:</strong> 
+                    <%= receita.dataValues.mediaNotas ? Number(receita.dataValues.mediaNotas).toFixed(1) : 'Sem avaliações' %> 
+                    (<%= receita.dataValues.totalAvaliacoes %> votos)
+                    </p>
                     <a class="btn-detalhes" href="/receitas/<%= receita.id %>">Ver Detalhes</a>
                     <a class="btn-editar" href="/receitas/<%= receita.id %>/editar">Editar</a>
 

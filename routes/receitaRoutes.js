@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const receitaController = require('../controllers/receitaController');
 
+// Rota específica de busca (Lista os resultados da pesquisa)
+router.get('/busca', receitaController.search);
+
 // /receitas/ (Lista todos)
 router.get('/', receitaController.index);
 

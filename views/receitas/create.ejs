@@ -10,22 +10,22 @@
     
     <form action="<%= receita ? `/receitas/${receita.id}?_method=PUT` : '/receitas' %>" method="POST">
         <div>
-            <label>Título:</label><br>
-            <input type="text" id="titulo" name="titulo" value="<%= receita ? receita.titulo : '' %>" required>
+            <label>Título<span class="required-mark">*</span>:</label><br>
+            <input type="text" placeholder="Ex: Bolo de Cenoura" id="titulo" name="titulo" value="<%= receita ? receita.titulo : '' %>" required>
         </div>
         
         <div>
-            <label>Descrição:</label><br>
+            <label>Descrição<span class="required-mark">*</span>:</label><br>
             <textarea id="descricao" name="descricao" rows="4" required><%= receita ? receita.descricao : '' %></textarea>
         </div>
 
         <div>
-            <label>Tempo de Preparo (min):</label><br>
-            <input type="number" id="tempoPreparo" name="tempoPreparo" value="<%= receita ? receita.tempoPreparo : '' %>" required>
+            <label>Tempo de Preparo (min)<span class="required-mark">*</span>:</label><br>
+            <input type="number" placeholder="Ex: 30" id="tempoPreparo" name="tempoPreparo" value="<%= receita ? receita.tempoPreparo : '' %>" required>
         </div>
 
         <div>
-            <label>Autor (Quem está criando?):</label><br>
+            <label>Autor (Quem está criando?)<span class="required-mark">*</span>:</label><br>
             <select name="autorId" required>
                 <option value="">Selecione um autor...</option>
                 <% usuarios.forEach(u => { %>

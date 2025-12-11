@@ -1,17 +1,94 @@
 // controllers/receitaController.js
 const { Receita, Usuario, Avaliacao } = require('../models/Associacoes');
+const { Op } = require('sequelize'); // Importa operadores do Sequelize
+const db = require('../config/database');
 
 module.exports = {
     //Listar todas as receitas
     async index(req, res) {
         try {
             const receitas = await Receita.findAll({
-                include: Usuario // Inclui dados do autor
+                attributes: {
+                    include: [
+                        // Adiciona um campo extra 'mediaNotas' usando SQL AVG
+                        [
+                            db.fn('AVG', db.col('Avaliacaos.nota')), 
+                            'mediaNotas'
+                        ],
+                        [
+                            db.fn('COUNT', db.col('Avaliacaos.id')), 
+                            'totalAvaliacoes'
+                        ]
+                    ]
+                },
+                include: [
+                    { model: Usuario }, // Traz o autor
+                    { model: Avaliacao, attributes: [] } // Inclui avaliações mas não traz os dados delas (só para o cálculo)
+                ],
+    // Agrupa por receita para o cálculo funcionar, porque se nao ele faria o calculo de todas as avaliações de todas as receitas juntas
+                group: ['Receita.id'] 
             });
+
             return res.render('receitas/index', { receitas });
         } catch (err) {
             console.error(err);
             return res.status(500).send('Erro ao buscar receitas');
+        }
+    },
+    // Pesquisa de receitas por título e autor
+    async search(req, res) {
+        try {
+            const { termo } = req.query;
+
+            if (!termo) {
+                return res.redirect('/receitas');
+            }
+
+            const receitas = await Receita.findAll({
+                // Condição de busca usando LIKE para título e nome do autor
+                where: {
+                    [Op.or]: [
+                        { titulo: { [Op.like]: `%${termo}%` } },
+                        { '$Usuario.nome$': { [Op.like]: `%${termo}%` } } 
+                    ] 
+                },
+                // Agregações para média e contagem de avaliações
+                attributes: {
+                    include: [
+                        [
+                            db.fn('AVG', db.col('Avaliacaos.nota')), 
+                            'mediaNotas'
+                        ],
+                        [
+                            db.fn('COUNT', db.col('Avaliacaos.id')), 
+                            'totalAvaliacoes'
+                        ]
+                    ]
+                },
+                // Inclusões necessárias para autor e avaliações
+                include: [
+                    { 
+                        model: Usuario,
+                        required: true // INNER JOIN: Garante que só venham receitas com autor
+                    },
+                    { 
+                        model: Avaliacao, 
+                        attributes: [] // Não trazemos os dados brutos, apenas para o cálculo
+                    }
+                ],
+                // Agrupamento (Obrigatório quando usamos AVG/COUNT com Joins)
+                group: ['Receita.id'],
+                subQuery: false // Evita problemas com subqueries no Sequelize
+            });
+
+            return res.render('receitas/index', { 
+                receitas, 
+                termo // Passa o termo para a view para manter no campo de busca
+            });
+
+        } catch (err) {
+            console.error("Erro na busca:", err);
+            return res.status(500).send('Erro na pesquisa');
         }
     },
 

@@ -17,16 +17,27 @@ module.exports = {
     },
 
     //Salvar avaliação
-    async store(req, res) {
-        try {
-            // No req.body vai vir: ids, nota e comentario
-            await Avaliacao.create(req.body);
-            return res.redirect(`/receitas/${req.body.receitaId}`);
-        } catch (err) {
-            console.error(err);
-            return res.status(400).send('Erro ao salvar avaliação');
+async store(req, res) {
+    try {
+        const { nota, comentario, usuarioId, receitaId } = req.body;
+
+        // REGRA DE NEGÓCIO: Validar duplicidade
+        const avaliacaoExistente = await Avaliacao.findOne({
+            where: { usuarioId, receitaId }
+        });
+
+        if (avaliacaoExistente) {
+            // Se já existir, retornamos um erro
+            return res.status(400).send('Você já avaliou esta receita! Tente editar sua avaliação anterior.');
         }
-    },
+
+        await Avaliacao.create({ nota, comentario, usuarioId, receitaId });
+        return res.redirect(`/receitas/${receitaId}`);
+    } catch (err) {
+        console.error(err);
+        return res.status(400).send('Erro ao salvar avaliação');
+    }
+},
 
     async edit(req, res) {
         try {

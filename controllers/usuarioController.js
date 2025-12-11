@@ -1,5 +1,6 @@
 // controllers/usuarioController.js
 const { Usuario } = require('../models/Associacoes');
+const { Op } = require('sequelize');
 
 module.exports = {
     //Método para LISTAR todos os usuários (GET)
@@ -83,6 +84,33 @@ module.exports = {
         } catch (err) {
             console.error(err);
             return res.status(500).send('Erro ao excluir usuário');
+        }
+    },
+    // Método para BUSCAR usuários (GET)
+    async search(req, res) {
+        try {
+            const { termo } = req.query;
+            if (!termo) {
+                return res.redirect('/usuarios');
+            }
+
+            const usuarios = await Usuario.findAll({
+                where: {
+                    [Op.or]: [
+                        { nome: { [Op.like]: `%${termo}%` } },
+                        { email: { [Op.like]: `%${termo}%` } }
+                    ]
+                }
+            });
+
+            // Reutilizamos a view index, mas passamos os resultados da busca
+            return res.render('usuarios/index', { 
+                usuarios, 
+                termo // Passamos o termo para manter no input da busca
+            });
+        } catch (err) {
+            console.error("Erro na busca de usuários:", err);
+            return res.status(500).send('Erro ao pesquisar usuários');
         }
     }
 };

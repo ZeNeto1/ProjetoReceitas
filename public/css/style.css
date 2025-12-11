@@ -238,3 +238,38 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+.required-mark {
+    color: #e74c3c; /* Um tom de vermelho */
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+input:invalid:focus {
+    border: 2px solid #e74c3c;
+    outline: none;
+}
+
+.alerta-vazio {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px dashed #ccc;
+    margin-top: 20px;
+}
+
+.btn-voltar {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn-voltar:hover {
+    background-color: #2980b9;
+}

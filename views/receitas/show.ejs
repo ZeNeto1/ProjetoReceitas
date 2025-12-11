@@ -14,7 +14,6 @@
         
         <h3>Descrição:</h3>
         <p><%= receita.descricao %></p>
-
         <hr>
 
         <a class="btn-avaliar" href="/avaliacoes/create?receitaId=<%= receita.id %>">Avaliar esta Receita</a>
@@ -26,6 +25,7 @@
                     <div class="Avaliacaos-card" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px;">
                         <p><strong><%= Avaliacaos.Usuario ? Avaliacaos.Usuario.nome : 'Anônimo' %></strong></p>
                         <p><strong>Nota:</strong> <%= Avaliacaos.nota %>/5 ⭐</p>
+                        
                         <p><strong>Comentário:</strong> <%= Avaliacaos.comentario || 'Sem comentário' %></p>
                         <small><em>Avaliado em: <%= new Date(Avaliacaos.createdAt).toLocaleDateString('pt-BR') %></em></small>
                     
