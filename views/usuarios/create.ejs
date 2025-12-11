@@ -6,20 +6,21 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Cadastrar Usuário</h1>
+    <h1><%= usuario ? 'Editar Usuário' : 'Criar Novo Usuário' %></h1>
     
-    <form action="/usuarios/salvar" method="POST">
+    <form action="<%= usuario ? `/usuarios/${usuario.id}?_method=PUT` : '/usuarios' %>" method="POST">
         <div>
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome" required>
+            <input type="text" id="nome" name="nome" value="<%= usuario ? usuario.nome : '' %>" required>
         </div>
         <br>
         <div>
             <label for="email">E-mail:</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" id="email" name="email" value="<%= usuario ? usuario.email : '' %>" required>
         </div>
         <br>
-        <button type="submit">Salvar</button>
+        <button type="submit">Salvar Usuário</button>
+
     </form>
 
     <a href="/usuarios">Cancelar</a>

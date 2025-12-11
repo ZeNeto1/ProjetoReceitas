@@ -15,8 +15,13 @@ module.exports = {
     },
 
     //Método para mostrar o FORMULÁRIO de criação (GET)
-    create(req, res) {
-        return res.render('usuarios/create');
+    async create(req, res) {
+        try {
+            return res.render('usuarios/create', { usuario: null });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao carregar formulário');
+        }
     },
 
     //Método para SALVAR o usuário no banco (POST)
@@ -34,6 +39,50 @@ module.exports = {
             console.error(err);
             // Se der erro (ex: email duplicado), mostra na tela
             return res.status(400).send('Erro ao criar usuário: ' + err.message);
+        }
+    },
+
+    // Método para mostrar o FORMULÁRIO de edição (GET)
+    async edit(req, res) {
+        try {
+            const usuario = await Usuario.findByPk(req.params.id);
+            if (!usuario) {
+                return res.status(404).send('Usuário não encontrado');
+            }
+            return res.render('usuarios/create', { usuario });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao carregar usuário');
+        }
+    },
+
+    // Método para ATUALIZAR o usuário no banco (PUT)
+    async update(req, res) {
+        try {
+            const usuario = await Usuario.findByPk(req.params.id);
+            if (!usuario) {
+                return res.status(404).send('Usuário não encontrado');
+            }
+            await usuario.update(req.body);
+            return res.redirect('/usuarios');
+        } catch (err) {
+            console.error(err);
+            return res.status(400).send('Erro ao atualizar usuário');
+        }
+    },
+
+    // Método para EXCLUIR o usuário do banco (DELETE)
+    async destroy(req, res) {
+        try {
+            const usuario = await Usuario.findByPk(req.params.id);
+            if (!usuario) {
+                return res.status(404).send('Usuário não encontrado');
+            }
+            await usuario.destroy();
+            return res.redirect('/usuarios');
+        } catch (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao excluir usuário');
         }
     }
 };

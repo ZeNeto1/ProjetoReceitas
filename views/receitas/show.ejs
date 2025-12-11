@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title><%= receita.titulo %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1><%= receita.titulo %></h1>
+        
+        <p><strong>Autor:</strong> <%= receita.Usuario ? receita.Usuario.nome : 'Desconhecido' %></p>
+        <p><strong>Tempo de Preparo:</strong> <%= receita.tempoPreparo %> minutos</p>
+        
+        <h3>Descrição:</h3>
+        <p><%= receita.descricao %></p>
+
+        <hr>
+
+        <a class="btn-avaliar" href="/avaliacoes/create?receitaId=<%= receita.id %>">Avaliar esta Receita</a>
+        
+        <h3>Avaliações:</h3>
+        <% if (receita.Avaliacaos && receita.Avaliacaos.length > 0) { %>
+            <div class="avaliacoes-list">
+                <% receita.Avaliacaos.forEach(Avaliacaos => { %>
+                    <div class="Avaliacaos-card" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                        <p><strong><%= Avaliacaos.Usuario ? Avaliacaos.Usuario.nome : 'Anônimo' %></strong></p>
+                        <p><strong>Nota:</strong> <%= Avaliacaos.nota %>/5 ⭐</p>
+                        <p><strong>Comentário:</strong> <%= Avaliacaos.comentario || 'Sem comentário' %></p>
+                        <small><em>Avaliado em: <%= new Date(Avaliacaos.createdAt).toLocaleDateString('pt-BR') %></em></small>
+                    
+                        <a class="btn-editar" href="/avaliacoes/<%= Avaliacaos.id %>/editar">Editar Avaliação</a>
+                    
+                        <form action="/avaliacoes/<%= Avaliacaos.id %>?_method=DELETE" method="POST"
+                              onsubmit="return confirm('Confirma exclusão desta avaliação?');"
+                              style="display:inline; margin-left:10px;">
+                            <button type="submit" class="btn-deletar">Excluir</button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p>Nenhuma avaliação ainda. Seja o primeiro a avaliar!</p>
+        <% } %>
+        
+        <br>
+        <a href="/receitas">Voltar ao Catálogo</a>
+        <a href="/" class="btn-home">Voltar ao Início</a>
+    </div>
+</body>
+</html>

@@ -21,9 +21,15 @@
                     <h3><%= receita.titulo %></h3>
                     <p><em>Por: <%= receita.Usuario ? receita.Usuario.nome : 'Autor Desconhecido' %></em></p>
                     <p>Tempo: <%= receita.tempoPreparo %> min</p>
-                    <a href="#">Ver Detalhes (Em breve)</a>
 
-                    <a class="btn-avaliar" href="/avaliacoes/create?receitaId=<%= receita.id %>">Avaliar</a>
+                    <a class="btn-detalhes" href="/receitas/<%= receita.id %>">Ver Detalhes</a>
+                    <a class="btn-editar" href="/receitas/<%= receita.id %>/editar">Editar</a>
+
+                    <form action="/receitas/<%= receita.id %>?_method=DELETE" method="POST"
+                        onsubmit="return confirm('Confirma exclusão da receita <%= receita.titulo %>?');"
+                        style="display:inline; margin-left:8px;">
+                        <button type="submit" class="btn-deletar">Excluir</button>
+                    </form>
                 </li>
                 <hr>
             <% }) %>

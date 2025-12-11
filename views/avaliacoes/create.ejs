@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliar</title>
+    <title><%= avaliacao ? 'Editar Avaliação' : 'Nova Avaliação' %></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
         <h1>Nova Avaliação</h1>
         
-        <form action="/avaliacoes/salvar" method="POST">
+        <form action="<%= avaliacao ? `/avaliacoes/${avaliacao.id}?_method=PUT` : '/avaliacoes' %>" method="POST">
             <div class="form-group">
                 <label for="receita_id">Receita:</label>
                 <select id="receita_id" name="receitaId" required>
                     <option value="">Selecione uma receita</option>
                     <% receitas.forEach(receita => { %>
-                        <option value="<%= receita.id %>" <%= receitaId && receitaId == receita.id ? 'selected' : '' %>><%= receita.titulo %></option>
+                        <option value="<%= receita.id %>"
+                            <%= (avaliacao ? avaliacao.receitaId : receitaId) == receita.id ? 'selected' : '' %>>
+                            <%= receita.titulo %>
+                        </option>
                     <% }); %>
                 </select>
             </div>
@@ -26,23 +29,23 @@
                 <select id="usuario_id" name="usuarioId" required>
                     <option value="">Selecione um usuário</option>
                     <% usuarios.forEach(usuario => { %>
-                        <option value="<%= usuario.id %>"><%= usuario.nome %></option>
+                        <option value="<%= usuario.id %>" <%= avaliacao && avaliacao.usuarioId == usuario.id ? 'selected' : '' %>><%= usuario.nome %></option>
                     <% }); %>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="nota">Nota (1-5):</label>
-                <input type="number" id="nota" name="nota" min="1" max="5" required>
+                <input type="number" id="nota" name="nota" min="1" max="5" required value="<%= avaliacao ? avaliacao.nota : '' %>">
             </div>
 
             <div class="form-group">
                 <label for="comentario">Comentário:</label>
-                <textarea id="comentario" name="comentario" rows="4"></textarea>
+                <textarea id="comentario" name="comentario" rows="4"><%= avaliacao ? avaliacao.comentario : '' %></textarea>
             </div>
 
             <button type="submit" class="btn-primary">Salvar Avaliação</button>
-            <a href="/avaliacoes" class="btn-secondary">Cancelar</a>
+            <a href="<%= receitaId ? `/receitas/${receitaId}` : '/receitas' %>" class="btn-secondary">Cancelar</a>
         </form>
     </div>
 </body>

@@ -6,30 +6,30 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Nova Receita</h1>
+    <h1><%= receita ? 'Editar Receita' : 'Criar Nova Receita' %></h1>
     
-    <form action="/receitas/salvar" method="POST">
+    <form action="<%= receita ? `/receitas/${receita.id}?_method=PUT` : '/receitas' %>" method="POST">
         <div>
             <label>Título:</label><br>
-            <input type="text" name="titulo" required>
+            <input type="text" id="titulo" name="titulo" value="<%= receita ? receita.titulo : '' %>" required>
         </div>
         
         <div>
             <label>Descrição:</label><br>
-            <textarea name="descricao" rows="4" cols="50" required></textarea>
+            <textarea id="descricao" name="descricao" rows="4" required><%= receita ? receita.descricao : '' %></textarea>
         </div>
 
         <div>
             <label>Tempo de Preparo (min):</label><br>
-            <input type="number" name="tempoPreparo" required>
+            <input type="number" id="tempoPreparo" name="tempoPreparo" value="<%= receita ? receita.tempoPreparo : '' %>" required>
         </div>
 
         <div>
             <label>Autor (Quem está criando?):</label><br>
             <select name="autorId" required>
                 <option value="">Selecione um autor...</option>
-                <% usuarios.forEach(usuario => { %>
-                    <option value="<%= usuario.id %>"><%= usuario.nome %></option>
+                <% usuarios.forEach(u => { %>
+                    <option value="<%= u.id %>" <%= receita && receita.autorId == u.id ? 'selected' : '' %>><%= u.nome %></option>
                 <% }) %>
             </select>
         </div>
