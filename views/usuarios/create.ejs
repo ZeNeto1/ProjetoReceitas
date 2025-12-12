@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <div class="container receitas-page">
+
     <h1><%= usuario ? 'Editar Usuário' : 'Criar Novo Usuário' %></h1>
     
     <form action="<%= usuario ? `/usuarios/${usuario.id}?_method=PUT` : '/usuarios' %>" method="POST">
@@ -20,9 +22,10 @@
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Salvar Usuário</button>
-
+        <a href="/usuarios" class="btn btn-voltar">Cancelar</a>
     </form>
 
-    <a href="/usuarios" class="btn btn-voltar">Cancelar</a>
+
+    </div>
 </body>
 </html>

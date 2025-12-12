@@ -23,11 +23,16 @@ html {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/img/top-view-table-full-delicious-food-composition.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Lato', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--light-bg);
     color: var(--text-dark);
     line-height: 1.6;
-    font-size: 16px;
+    font-size: 20px;
+    
 }
 
 /* Classe Personalizada */
@@ -37,7 +42,14 @@ body.receitas-page {
     background-size: cover;
     background-position: center;
 }
-
+.container {
+    background: rgba(255, 255, 255, 0.85);
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(3px);
+}
 body.receitas-page .container {
     background: rgba(255, 255, 255, 0.85);
     max-width: 800px;
@@ -45,6 +57,9 @@ body.receitas-page .container {
     padding: 20px;
     border-radius: 12px;
     backdrop-filter: blur(3px);
+}
+h1, h3, p, a {
+    color: #222;
 }
 
 /* Header */
