@@ -14,17 +14,14 @@
 <body>
     
     <div class="container">
-        <body>
-            <div class="container">
-                <% if (typeof error !== 'undefined' && error) { %>
-                    <div class="alert-error">
-                        <%= decodeURIComponent(error) %>
-                    </div>
-                <% } %>
-                <h1><%= avaliacao ? 'Editar Avaliação' : 'Nova Avaliação' %></h1>
-                
+        <div>
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert-error">
+                    <%= decodeURIComponent(error) %>
                 </div>
-        </body>
+            <% } %>
+            <h1><%= avaliacao ? 'Editar Avaliação' : 'Nova Avaliação' %></h1>
+        </div>
         
         <form action="<%= avaliacao ? `/avaliacoes/${avaliacao.id}?_method=PUT` : '/avaliacoes' %>" method="POST">
             <div class="form-group">
