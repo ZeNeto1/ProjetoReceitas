@@ -53,12 +53,10 @@ module.exports = {
             // Checa duplicidade antes de criar
             if (await checarDuplicidade(usuarioId, receitaId)) {
                 // Redireciona de volta para o formulário com a mensagem de erro na URL
-                // Você precisará configurar sua rota para aceitar o parâmetro na query.
                 return res.redirect(`/avaliacoes/create?receitaId=${receitaId}&error=${encodeURIComponent(DUPLICATE_MSG)}`);
             }
 
             await Avaliacao.create(req.body);
-            // Recomendo usar 'flash messages' aqui para exibir o sucesso
             return res.redirect(`/receitas/${receitaId}`); 
         } catch (err) {
             console.error(err);
@@ -109,7 +107,6 @@ module.exports = {
             }
 
             await avaliacao.update(req.body);
-            // Recomendo usar 'flash messages' aqui para exibir o sucesso
             return res.redirect(`/receitas/${receitaId}`);
         } catch (err) {
             console.error(err);
@@ -119,7 +116,7 @@ module.exports = {
         }
     },
 
-    // (opcional) deletar
+    // deletar
     async destroy(req, res) {
         try {
             const avaliacao = await Avaliacao.findByPk(req.params.id);
