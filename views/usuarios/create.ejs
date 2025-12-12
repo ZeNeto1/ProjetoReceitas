@@ -10,19 +10,19 @@
     
     <form action="<%= usuario ? `/usuarios/${usuario.id}?_method=PUT` : '/usuarios' %>" method="POST">
         <div>
-            <label for="nome">Nome<span class="required-mark">*</span>:</label>
+            <label for="nome">Nome:<span class="required-mark">*</span></label>
             <input type="text" placeholder="Ex: João Silva" id="nome" name="nome" value="<%= usuario ? usuario.nome : '' %>" required>
         </div>
         <br>
         <div>
-            <label for="email">E-mail<span class="required-mark">*</span>:</label>
+            <label for="email">E-mail:<span class="required-mark">*</span></label>
             <input type="email" placeholder="Ex: joao@exemplo.com" id="email" name="email" value="<%= usuario ? usuario.email : '' %>" required>
         </div>
         <br>
-        <button type="submit">Salvar Usuário</button>
+        <button type="submit" class="btn btn-primary">Salvar Usuário</button>
 
     </form>
 
-    <a href="/usuarios">Cancelar</a>
+    <a href="/usuarios" class="btn btn-voltar">Cancelar</a>
 </body>
 </html>

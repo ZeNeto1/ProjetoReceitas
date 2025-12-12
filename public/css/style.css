@@ -70,6 +70,13 @@ header h1 {
     font-size: 1.8rem;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between; /* Um na esquerda, um na direita */
+    align-items: center; /* Centraliza verticalmente */
+    margin-bottom: 2rem; /* Espaço entre o cabeçalho e o formulário */
+}
+
 /* Navegação */
 nav ul {
     list-style: none;
@@ -96,43 +103,111 @@ nav a:hover {
 }
 
 /* Botões */
-button, .btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
+.btn, button, .btn-action, .btn-cadastrar, .btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaço entre ícone e texto */
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
     font-weight: 600;
+    border: none;
     cursor: pointer;
-    transition: var(--transition);
     text-decoration: none;
-    display: inline-block;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white; /* Padrão branco, mudamos para botões claros depois */
+    line-height: 1;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: var(--secondary-color);
+/* Efeito Hover Genérico (Levanta e aumenta sombra) */
+.btn:hover, button:hover, .btn-action:hover, .btn-cadastrar:hover, .btn-voltar:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0.95;
 }
 
-.btn-secondary {
-    background-color: var(--text-light);
-    color: white;
+/* Efeito Click (Afunda levemente) */
+.btn:active, button:active, .btn-action:active, .btn-cadastrar:active, .btn-voltar:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btn-danger {
-    background-color: var(--danger-color);
-    color: white;
+/* --- VARIANTES DE CORES --- */
+
+/* 1. Botão Principal (Laranja - Criar Receita) */
+.btn-cadastrar, .btn-primary {
+    background: linear-gradient(135deg, #ff7a18 0%, #ff4e00 100%);
+    box-shadow: 0 4px 10px rgba(255, 78, 0, 0.3);
 }
 
-.btn-success {
-    background-color: var(--success-color);
-    color: white;
+/* 2. Botão Secundário (Branco/Cinza - Pesquisar/Usuários) */
+.btn-secondary, button {
+    background-color: #ffffff;
+    color: #334155; /* Texto escuro */
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
+.btn-secondary:hover, button:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+/* 3. Botão Detalhes (Roxo - NOVO) */
+/* Escolhi Roxo para diferenciar do Azul de editar */
+.btn-detalhes {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+/* 4. Botão Editar (Azul/Ciano) */
+.btn-editar {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    box-shadow: 0 4px 10px rgba(6, 182, 212, 0.3);
+}
+
+/* 5. Botão Deletar (Vermelho) */
+.btn-deletar, .btn-danger {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Adiciona o ícone de lixeira via CSS se não tiver no HTML */
+.btn-deletar::before {
+    content: "\1F5D1";
+    font-size: 1.1em;
+}
+
+/* 6. Botão Voltar (Azul sólido clássico) */
+.btn-voltar {
+    background-color: #3b82f6;
+    margin-top: 10px;
+}
+
+/* --- AJUSTES DE TAMANHO --- */
+
+/* Botões menores para a lista (Editar/Excluir/Detalhes) */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+}
+
+/* Ajuste Responsivo */
+@media (max-width: 480px) {
+    .btn, button, .btn-action {
+        width: 100%; /* Botões ocupam largura total no celular */
+        margin-bottom: 8px;
+    }
+    
+    /* Na lista de receitas, manter botões lado a lado */
+    .lista-botoes .btn { 
+        width: auto; 
+    }
+}
+
 
 /* Forms */
 input, textarea, select {
@@ -152,11 +227,21 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
+.form-inline { display: inline; }
+.form-delete { margin-left: 8px; }
+
 label {
     display: block;
     margin-top: 1rem;
     font-weight: 600;
     color: var(--text-dark);
+}
+
+select:disabled {
+    background-color: #f1f5f9; /* Um cinza bem clarinho */
+    color: #64748b; /* Texto cinza */
+    cursor: not-allowed;
+    opacity: 1; /* Garante legibilidade */
 }
 
 /* Cards */
@@ -259,17 +344,18 @@ input:invalid:focus {
     margin-top: 20px;
 }
 
-.btn-voltar {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
+.receita-descricao {
+    /* Preserva as quebras de linha (pre) e permite quebrar o texto em novas linhas (wrap) */
+    white-space: pre-wrap;
 }
 
-.btn-voltar:hover {
-    background-color: #2980b9;
+.alert-error {
+    background-color: #fee2e2; /* Vermelho muito claro */
+    color: #b91c1c; /* Vermelho escuro */
+    border: 1px solid #f87171;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    list-style: none; /* Se usar lista, remova bolinhas */
 }

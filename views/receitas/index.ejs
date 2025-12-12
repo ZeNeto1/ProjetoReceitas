@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Receitas</title>
-    <!-- <link rel="stylesheet" href="/css/receitas.css"> -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="receitas-page">
     <div class="container">
     <h1>Catálogo de Receitas</h1>
-    <a href="/receitas/nova">Criar Nova Receita</a> | <a href="/">Voltar</a>
+    <div class="top-actions">
+        <a href="/receitas/nova" class="btn btn-cadastrar">Criar Nova Receita</a>
+        <a href="/usuarios" class="btn btn-secondary" style="margin-left:10px;">Ver Usuários</a>
+    </div>
     <hr>
     <div class="search-container">
         <form action="/receitas/busca" method="GET" class="search-form">
@@ -21,7 +23,7 @@
             <button type="submit" class="btn-search">Pesquisar</button>
 
             <% if (typeof termo !== 'undefined' && termo) { %>
-                <a href="/receitas" class="btn-clear-search">Limpar</a>
+                <a href="/receitas" class="btn btn-voltar">Limpar</a>
             <% } %>
         </form>
     </div>
@@ -40,13 +42,13 @@
                     <%= receita.dataValues.mediaNotas ? Number(receita.dataValues.mediaNotas).toFixed(1) : 'Sem avaliações' %> 
                     (<%= receita.dataValues.totalAvaliacoes %> votos)
                     </p>
-                    <a class="btn-detalhes" href="/receitas/<%= receita.id %>">Ver Detalhes</a>
-                    <a class="btn-editar" href="/receitas/<%= receita.id %>/editar">Editar</a>
+                    <a class="btn btn-detalhes" href="/receitas/<%= receita.id %>">Ver Detalhes</a>
+                    <a class="btn btn-editar" href="/receitas/<%= receita.id %>/editar">Editar</a>
 
                     <form action="/receitas/<%= receita.id %>?_method=DELETE" method="POST"
                         onsubmit="return confirm('Confirma exclusão da receita <%= receita.titulo %>?');"
                         style="display:inline; margin-left:8px;">
-                        <button type="submit" class="btn-deletar">Excluir</button>
+                        <button type="submit" class="btn btn-deletar">Excluir</button>
                     </form>
                 </li>
                 <hr>

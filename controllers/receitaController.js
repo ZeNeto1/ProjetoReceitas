@@ -169,10 +169,16 @@ module.exports = {
                     { model: Avaliacao, include: Usuario }
                 ]
             });
+
+            const avaliacoes = receita.Avaliacaos || receita.Avaliacoes || [];
+            const media = avaliacoes.length
+                ? (avaliacoes.reduce((s, a) => s + (a.nota || 0), 0) / avaliacoes.length)
+                : null;
+
             if (!receita) {
                 return res.status(404).send('Receita não encontrada');
             }
-            return res.render('receitas/show', { receita });
+            return res.render('receitas/show', { receita, avaliacoes, media });
         } catch (err) {
             console.error(err);
             return res.status(500).send('Erro ao carregar receita');

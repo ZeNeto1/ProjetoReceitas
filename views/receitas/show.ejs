@@ -7,18 +7,24 @@
 </head>
 <body>
     <div class="container">
-        <h1><%= receita.titulo %></h1>
+        <div class="page-header">
+            <h1><%= receita.titulo %></h1>
+            <a href="/receitas" class="btn btn-voltar">Voltar ao Catálogo</a>
+        </div>
         
         <p><strong>Autor:</strong> <%= receita.Usuario ? receita.Usuario.nome : 'Desconhecido' %></p>
         <p><strong>Tempo de Preparo:</strong> <%= receita.tempoPreparo %> minutos</p>
         
         <h3>Descrição:</h3>
-        <p><%= receita.descricao %></p>
+        <p class="receita-descricao"><%= receita.descricao %></p>
         <hr>
 
-        <a class="btn-avaliar" href="/avaliacoes/create?receitaId=<%= receita.id %>">Avaliar esta Receita</a>
+        <a class="btn btn-cadastrar" href="/avaliacoes/create?receitaId=<%= receita.id %>">Avaliar esta Receita</a>
         
         <h3>Avaliações:</h3>
+        <% if (media !== null) { %>
+            <p><strong>Média:</strong> <%= media.toFixed(1) %>/5 ⭐</p>
+        <% } %>
         <% if (receita.Avaliacaos && receita.Avaliacaos.length > 0) { %>
             <div class="avaliacoes-list">
                 <% receita.Avaliacaos.forEach(Avaliacaos => { %>
@@ -29,12 +35,12 @@
                         <p><strong>Comentário:</strong> <%= Avaliacaos.comentario || 'Sem comentário' %></p>
                         <small><em>Avaliado em: <%= new Date(Avaliacaos.createdAt).toLocaleDateString('pt-BR') %></em></small>
                     
-                        <a class="btn-editar" href="/avaliacoes/<%= Avaliacaos.id %>/editar">Editar Avaliação</a>
+                        <a class="btn btn-editar btn-sm" href="/avaliacoes/<%= Avaliacaos.id %>/editar">Editar Avaliação</a>
                     
                         <form action="/avaliacoes/<%= Avaliacaos.id %>?_method=DELETE" method="POST"
                               onsubmit="return confirm('Confirma exclusão desta avaliação?');"
                               style="display:inline; margin-left:10px;">
-                            <button type="submit" class="btn-deletar">Excluir</button>
+                            <button type="submit" class="btn btn-deletar btn-sm">Excluir</button>
                         </form>
                     </div>
                 <% }) %>
@@ -42,10 +48,6 @@
         <% } else { %>
             <p>Nenhuma avaliação ainda. Seja o primeiro a avaliar!</p>
         <% } %>
-        
-        <br>
-        <a href="/receitas">Voltar ao Catálogo</a>
-        <a href="/" class="btn-home">Voltar ao Início</a>
     </div>
 </body>
 </html>

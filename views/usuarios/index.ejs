@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Usuários Cadastrados</h1>
-    <a href="/usuarios/novo">Cadastrar Novo Usuário</a>
+    <a href="/usuarios/novo" class="btn btn-cadastrar">Cadastrar Novo Usuário</a>
     <hr>
 
     <div class="search-container">
@@ -16,7 +16,7 @@
             <button type="submit">Pesquisar</button>
             
             <% if (typeof termo !== 'undefined' && termo) { %>
-                <a href="/usuarios" class="btn-voltar">Limpar busca</a>
+                <a href="/usuarios" class="btn btn-voltar">Limpar busca</a>
             <% } %>
         </form>
     </div>
@@ -28,12 +28,12 @@
             <% usuarios.forEach(usuario => { %>
                 <li>
                     <strong><%= usuario.nome %></strong> - <%= usuario.email %>
-                    <a href="/usuarios/<%= usuario.id %>/editar" class="btn-editar">Editar</a>
+                    <a href="/usuarios/<%= usuario.id %>/editar" class="btn btn-editar btn-sm">Editar</a>
 
                     <form action="/usuarios/<%= usuario.id %>?_method=DELETE" method="POST"
                           onsubmit="return confirm('Confirma exclusão do usuário <%= usuario.nome %>?');"
-                          style="display:inline; margin-left:8px;">
-                        <button type="submit" class="btn-deletar">Excluir</button>
+                          class="form-inline form-delete">
+                        <button type="submit" class="btn btn-deletar btn-sm">Excluir</button>
                     </form>
                 </li>
             <% }) %>
@@ -42,16 +42,16 @@
         <div class="alerta-vazio">
             <% if (typeof termo !== 'undefined' && termo) { %>
                 <p>Nenhum usuário encontrado para a busca: <strong>"<%= termo %>"</strong></p>
-                <a href="/usuarios" class="btn-voltar">Voltar para a lista completa</a>
+                <a href="/usuarios" class="btn btn-voltar">Voltar para a lista completa</a>
             <% } else { %>
                 <p>Nenhum usuário cadastrado no sistema.</p>
-                <a href="/usuarios/novo" class="btn-voltar">Cadastrar o primeiro usuário</a>
+                <a href="/usuarios/novo" class="btn btn-voltar">Cadastrar o primeiro usuário</a>
             <% } %>
         </div>
     <% } %>
     
     <br>
     <hr>
-    <a href="/">Voltar ao Início</a>
+    <a href="/receitas" class="btn btn-voltar">Voltar ao Catálogo</a>
 </body>
 </html>

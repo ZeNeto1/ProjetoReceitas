@@ -8,9 +8,6 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const receitaRoutes = require('./routes/receitaRoutes');
 const avaliacaoRoutes = require('./routes/avaliacaoRoutes');
 
-// TEMPORARIO
-const { Usuario, Receita, Avaliacao } = require('./models/Associacoes');
-
 // --- CONFIGURAÇÕES DO EXPRESS ---
 app.set('view engine', 'ejs'); // Define EJS como template engine
 app.set('views', path.join(__dirname, 'views')); // Pasta onde ficam os arquivos .ejs
@@ -32,25 +29,9 @@ db.sync({ force: false })
     .catch(err => console.error('Erro:', err));
 
 // Rota base para tela de início
-// app.get('/', (req, res) => {
-//     return res.render('home/index');
-// });
-
-// TEMPORARIO
-// Rota base para tela de início
-app.get('/', async (req, res) => {
-    try {
-        const usuarios = await Usuario.findAll();
-        const receitas = await Receita.findAll({ include: Usuario });
-        const avaliacoes = await Avaliacao.findAll({ include: [Usuario, Receita] });
-        
-        return res.render('home/index', { usuarios, receitas, avaliacoes });
-    } catch (err) {
-        console.error(err);
-        return res.render('home/index', { usuarios: [], receitas: [], avaliacoes: [] });
-    }
+app.get('/', (req, res) => {
+    return res.redirect('/receitas');
 });
-
 
 const PORT = 3000;
 app.listen(PORT, () => {
